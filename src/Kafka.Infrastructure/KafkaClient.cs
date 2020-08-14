@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 using CluedIn.Core.Logging;
 using CluedIn.Core.Providers;
 using CluedIn.Crawling.Kafka.Core;
+using CluedIn.Crawling.Kafka.Core.Models;
 using Confluent.Kafka;
 using Microsoft.Xrm.Sdk;
 using Newtonsoft.Json;
@@ -165,7 +167,7 @@ namespace CluedIn.Crawling.Kafka.Infrastructure
                         stopWatch.Restart();
                         this.log.Info(() => $"Kafka Crawler - Creating dummy object after receiving 0 messages for 5 minutes.");
 
-                        yield return new IssContact
+                        yield return new Contact
                         {
                             AccountId = $"Dummy AccountId",
                             AccountIdName = $"Dummy AccountIdName",
@@ -196,12 +198,10 @@ namespace CluedIn.Crawling.Kafka.Infrastructure
                 switch (_kafkaCrawlJobData.KafkaTopic.ToLower())
                 {
                     case "crm.contact":
-                        return ExtractObject<IssContact>(cr.Message.Value); //to confirm with ISS
-                    case "crm.customer":
-                        return ExtractObject<IssAccount>(cr.Message.Value); //to confirm with ISS
+                        return ExtractObject<Contact>(cr.Message.Value); //to confirm with ISS
                     default:
                         {
-                            this._log.Error(() => $"Kafka Crawler - Could not get object form message. Topic {cr.Topic}. Offset: {cr.TopicPartitionOffset}");
+                            this.log.Error(() => $"Kafka Crawler - Could not get object form message. Topic {cr.Topic}. Offset: {cr.TopicPartitionOffset}");
                             return null;
                         }
                 }
