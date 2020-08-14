@@ -117,7 +117,7 @@ namespace CluedIn.Crawling.Kafka.Infrastructure
                 }
                 catch (Exception ex)
                 {
-                    this.log.Error(() => $"Dynamics Kafka Crawler - Could not create Consumer. Exception: {ex.Message}");
+                    this.log.Error(() => $"Kafka Crawler - Could not create Consumer. Exception: {ex.Message}");
                     if (consumer != null)
                         consumer.Dispose();
                     yield break;
@@ -163,7 +163,7 @@ namespace CluedIn.Crawling.Kafka.Infrastructure
                     else if (stopWatch.Elapsed.TotalMinutes >= this._kafkaCrawlJobData.KafkaDummyClueGenerationInterval) //in order to prevent the job from being shut down, we create a dummy clue and then we restart the timer
                     {
                         stopWatch.Restart();
-                        this.log.Info(() => $"Dynamics Kafka Crawler - Creating dummy object after receiving 0 messages for 5 minutes.");
+                        this.log.Info(() => $"Kafka Crawler - Creating dummy object after receiving 0 messages for 5 minutes.");
 
                         yield return new IssContact
                         {
