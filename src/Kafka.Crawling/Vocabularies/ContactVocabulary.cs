@@ -3,9 +3,9 @@ using CluedIn.Core.Data.Vocabularies;
 
 namespace CluedIn.Crawling.Kafka.Vocabularies
 {
-    public class KafkaVocabulary : SimpleVocabulary
+    public class ContactVocabulary : SimpleVocabulary
     {
-        public KafkaVocabulary()
+        public ContactVocabulary()
         {
             VocabularyName = "Kafka Contact"; // TODO: Set value
             KeyPrefix = "kafka.contact"; // TODO: Set value
